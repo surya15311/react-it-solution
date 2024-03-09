@@ -10,14 +10,25 @@ const imageUrls = [
 
 function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isSlideshowPaused, setIsSlideshowPaused] = useState(true);
+
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
+  };
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
-    }, 2000);
+    let intervalId;
+
+    if (!isSlideshowPaused) {
+      intervalId = setInterval(nextImage, 2000);
+    }
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [isSlideshowPaused]);
 
   const backgroundImageStyle = {
     backgroundImage: `url(${imageUrls[currentImageIndex]})`,
@@ -27,10 +38,14 @@ function Home() {
     <div className='home' style={backgroundImageStyle}>
       <div className='headerContainer'>
         <h1>IT SOLUTIONS</h1>
-        <p>Get your best solutions everyday...</p>
+        <p>Get your best solutions every day...</p>
         <Link to='services'>
-          <button>Read more</button>
+          <button onClick={() => setIsSlideshowPaused(!isSlideshowPaused)}>Read more</button>
         </Link>
+      </div>
+      <div className='slideButtons'>
+        <button onClick={prevImage}>&lt;</button>
+        <button onClick={nextImage}>&gt;</button>
       </div>
     </div>
   );
