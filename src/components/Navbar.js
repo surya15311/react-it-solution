@@ -14,7 +14,7 @@ function Navbar() {
     <>
       <div className="navbar">
         <div className="nav-logo" id={openLinks ? "open" : "close"}>
-          <img src={Logo} />
+          <img src={Logo} alt=""/>
           <div className="hiddenLinks">
           <Link to="/"> Home </Link>
             <Link to="/services"> Services </Link>
